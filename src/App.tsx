@@ -111,20 +111,20 @@ const VhybZApp: React.FC = () => {
         {/* Toolbar */}
         <div className="toolbar px-4 sm:px-6 py-2 flex justify-between items-center border-t border-border/30 mt-auto mb-2 sm:mb-3">
           <div className="commands flex gap-1 sm:gap-2">
-            <Button variant="ghost" size="icon" onClick={handleUndo} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors border-0 shadow-none" title="Undo">
+            <Button variant="ghost" size="icon" onClick={handleUndo} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Undo">
               <Undo className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRedo} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors border-0 shadow-none" title="Redo">
+            <Button variant="ghost" size="icon" onClick={handleRedo} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Redo">
               <Redo className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleSave} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors border-0 shadow-none" title="Save">
+            <Button variant="ghost" size="icon" onClick={handleSave} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Save">
               <Save className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors border-0 shadow-none" title="Restore">
+            <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Restore">
               <RotateCcw className="size-5 text-foreground" />
             </Button>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors border-0 shadow-none" title="Add">
+          <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Add">
             <Plus className="size-5 text-foreground" />
           </Button>
         </div>
