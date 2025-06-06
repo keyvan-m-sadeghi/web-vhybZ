@@ -13,7 +13,7 @@ import {
   MessageCircle, 
   Smartphone, 
   RotateCcw,
-  Paperclip 
+  Mic 
 } from 'lucide-react';
 import './App.css';
 
@@ -46,8 +46,12 @@ const VhybZApp: React.FC = () => {
     setMessage('');
   };
 
-  const handleAttachment = () => {
-    // Placeholder for attachment logic
+  const handleTools = () => {
+    // Placeholder for tools logic
+  };
+
+  const handleMicrophone = () => {
+    // Placeholder for microphone logic
   };
 
   return (
@@ -107,59 +111,70 @@ const VhybZApp: React.FC = () => {
         {/* Toolbar */}
         <div className='toolbar'>
           <div className="commands">
-            <Button variant="ghost" size="icon" onClick={handleUndo} className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}} title="Undo">
-              <Undo className="size-5" style={{color: 'hsl(var(--foreground))'}} />
+            <Button variant="ghost" size="icon" onClick={handleUndo} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Undo">
+              <Undo className="size-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRedo} className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}} title="Redo">
-              <Redo className="size-5" style={{color: 'hsl(var(--foreground))'}} />
+            <Button variant="ghost" size="icon" onClick={handleRedo} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Redo">
+              <Redo className="size-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleSave} className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}} title="Save">
-              <Save className="size-5" style={{color: 'hsl(var(--foreground))'}} />
+            <Button variant="ghost" size="icon" onClick={handleSave} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Save">
+              <Save className="size-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRevert} className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}} title="Restore">
-              <RotateCcw className="size-5" style={{color: 'hsl(var(--foreground))'}} />
+            <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Restore">
+              <RotateCcw className="size-5" />
             </Button>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleRevert} className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}} title="Add">
-            <Plus className="size-5" style={{color: 'hsl(var(--foreground))'}} />
+          <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Add">
+            <Plus className="size-5" />
           </Button>
         </div>
 
         {/* Prompt Input */}
-        <div className="prompt">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleAttachment}
-            className="shrink-0 p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors"
-            style={{color: 'hsl(var(--foreground))'}}
-            title="Attach file"
-          >
-            <Paperclip className="size-5" style={{color: 'hsl(var(--foreground))'}} />
-          </Button>
-          
-          <div className="relative flex-1">
+        <div className="px-4 pb-4">
+          <div className="prompt mb-3">
+            <Button 
+              variant="ghost" 
+              onClick={handleTools}
+              className="p-0 border-0 shadow-none bg-transparent hover:bg-transparent focus:bg-transparent"
+              title="Tools"
+            >
+              <div className="flex items-center px-2 py-1.5 text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 active:bg-neutral-600 rounded-lg transition-colors">
+                <Plus className="size-5 mr-1.5" />
+                <span className="text-sm">Tools</span>
+              </div>
+            </Button>
+            
             <Textarea
-              placeholder="Type your prompt here..."
+              placeholder="Craft something beautiful..."
               value={message}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
-              className="min-h-0 resize-none border-border/10 bg-transparent focus:border-border/30 focus:bg-muted/5 transition-all duration-200 px-4 py-3 text-base leading-relaxed shadow-none"
-              style={{color: 'hsl(var(--foreground))', '--placeholder-color': 'hsl(var(--foreground) / 0.6)'} as React.CSSProperties & {'--placeholder-color': string}}
-              rows={2}
+              className="flex-1 bg-transparent border-0 focus:ring-0 text-foreground placeholder:text-neutral-400 resize-none text-sm py-1.5 min-h-0 outline-none focus:outline-none"
+              rows={1}
             />
+            
+            <Button 
+              variant="ghost" 
+              onClick={handleMicrophone}
+              className="p-0 border-0 shadow-none bg-transparent hover:bg-transparent focus:bg-transparent"
+              title="Microphone"
+            >
+              <div className="w-8 h-8 flex items-center justify-center text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 active:bg-neutral-600 rounded-lg transition-colors">
+                <Mic className="size-5" />
+              </div>
+            </Button>
+            
+            <Button 
+              variant="ghost"
+              onClick={handleSendMessage} 
+              className="p-0 border-0 shadow-none bg-transparent hover:bg-transparent focus:bg-transparent"
+              disabled={!message.trim()}
+              title="Send Message"
+            >
+              <div className="w-8 h-8 rounded-full bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-500 flex items-center justify-center transition-colors">
+                <ArrowUp className="size-5 text-neutral-200" />
+              </div>
+            </Button>
           </div>
-          
-          <Button 
-            onClick={handleSendMessage} 
-            variant="default"
-            size="default"
-            className="shrink-0 px-6 py-3 transition-colors shadow-sm font-medium"
-            style={{backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))'}}
-            disabled={!message.trim()}
-          >
-            <ArrowUp className="size-4 mr-2" style={{color: 'hsl(var(--primary-foreground))'}} />
-            Send
-          </Button>
         </div>
       </div>
     </div>
