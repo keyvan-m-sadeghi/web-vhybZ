@@ -1,22 +1,11 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, ButtonGroup, Button, Box, TextField, Paper, CssBaseline } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import ShareIcon from '@mui/icons-material/Share';
-import UndoIcon from '@mui/icons-material/Undo';
-import RedoIcon from '@mui/icons-material/Redo';
-import SaveIcon from '@mui/icons-material/Save';
-import AddIcon from '@mui/icons-material/Add';
-import SendIcon from '@mui/icons-material/Send';
-import ChatIcon from '@mui/icons-material/Chat';
-import SmartphoneIcon from '@mui/icons-material/Smartphone';
-import RestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import './App.css';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: 'dark',
+//   },
+// });
 
 const VhybZApp: React.FC = () => {
   const [view, setView] = useState<string>('render');
@@ -48,60 +37,58 @@ const VhybZApp: React.FC = () => {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Box className='window'>
-        <AppBar className='appbar' color="transparent" position='relative'>
-          <Toolbar className='navbar'>
-            <IconButton color="inherit">
-              <Box component="img" src="/logo.png" alt="VhybZ Logo" className='logo'/>
-            </IconButton>
-            <ButtonGroup variant="contained">
-              <Button onClick={() => setView('render')} variant={view === 'render' ? 'contained' : 'outlined'} size="small">
-                <SmartphoneIcon />
-              </Button>
-              <Button onClick={() => setView('chat')} variant={view === 'chat' ? 'contained' : 'outlined'} size="small">
-                <ChatIcon />
-              </Button>
-            </ButtonGroup>
-            <IconButton color="inherit" onClick={handleShare}>
-              <ShareIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+    // <ThemeProvider theme={darkTheme}>
+    //   <CssBaseline />
+      <div className='window'>
+        <header className='appbar'>
+          <div className='navbar'>
+            <button>
+              <img src="/logo.png" alt="VhybZ Logo" className='logo'/>
+            </button>
+            <div role="group"> {/* Replaced ButtonGroup */}
+              <button onClick={() => setView('render')}>
+                {/* SmartphoneIcon */} Render
+              </button>
+              <button onClick={() => setView('chat')}>
+                {/* ChatIcon */} Chat
+              </button>
+            </div>
+            <button onClick={handleShare}>
+              {/* ShareIcon */} Share
+            </button>
+          </div>
+        </header>
 
-        <Box className='content'>
-          <Paper className='container'>
+        <main className='content'>
+          <div className='container'> {/* Replaced Paper */}
             {view === 'render' ? 'Rendered content' : 'Chat history'}
-          </Paper>
-        </Box>
+          </div>
+        </main>
 
-        <Box className='toolbar'>
-          <Box className="commands">
-            <IconButton onClick={handleUndo} color="inherit"><UndoIcon /></IconButton>
-            <IconButton onClick={handleRedo} color="inherit"><RedoIcon /></IconButton>
-            <IconButton onClick={handleSave} color="inherit"><SaveIcon /></IconButton>
-            <IconButton onClick={handleRevert} color="inherit"><RestoreIcon /></IconButton>
-          </Box>
-          <IconButton onClick={handleRevert} color="inherit"><AddIcon /></IconButton>
-        </Box>
+        <div className='toolbar'>
+          <div className="commands">
+            <button onClick={handleUndo}>{/* UndoIcon */}Undo</button>
+            <button onClick={handleRedo}>{/* RedoIcon */}Redo</button>
+            <button onClick={handleSave}>{/* SaveIcon */}Save</button>
+            <button onClick={handleRevert}>{/* RestoreIcon */}Revert</button>
+          </div>
+          <button onClick={handleRevert}>{/* AddIcon */}Add</button>
+        </div>
 
-        <Box className="prompt">
-          <TextField
-            fullWidth
-            size="small"
+        <div className="prompt">
+          <textarea
+            className="fullWidth" // Assuming fullWidth is a class that provides this style
             placeholder="Prompt"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            multiline
-            maxRows={2}
+            rows={2} // Replaced multiline and maxRows
           />
-          <Button variant="contained" onClick={handleSendMessage}>
-            <SendIcon />
-          </Button>
-        </Box>
-      </Box>
-    </ThemeProvider>
+          <button onClick={handleSendMessage}>
+            {/* SendIcon */} Send
+          </button>
+        </div>
+      </div>
+    // </ThemeProvider>
   );
 };
 
