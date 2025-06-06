@@ -59,7 +59,7 @@ const VhybZApp: React.FC = () => {
       <div className='window'>
         {/* Header */}
         <header className='appbar'>
-          <nav className='navbar'>
+          <nav className="navbar px-4 sm:px-6 py-3 flex justify-between items-center border-b border-border/30">
             <Button variant="ghost" size="icon" className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}}>
               <img src="/logo.png" alt="VhybZ Logo" className='logo h-6 w-6'/>
             </Button>
@@ -86,13 +86,13 @@ const VhybZApp: React.FC = () => {
             </div>
             
             <Button variant="ghost" size="icon" onClick={handleShare} className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}}>
-              <Share2 className="size-5" style={{color: 'hsl(var(--foreground))'}} />
+              <Share2 className="size-5 text-foreground" />
             </Button>
           </nav>
         </header>
 
         {/* Main Content */}
-        <main className='content'>
+        <main className='content px-4 sm:px-6 py-6 sm:py-8 flex-1 flex flex-col justify-center'>
           <Card className='container border-transparent shadow-none bg-transparent'>
             <CardHeader className="flex flex-col items-center justify-center text-center pb-4">
               <CardTitle className="text-2xl font-semibold text-foreground mb-3">
@@ -109,38 +109,37 @@ const VhybZApp: React.FC = () => {
         </main>
 
         {/* Toolbar */}
-        <div className='toolbar'>
-          <div className="commands">
-            <Button variant="ghost" size="icon" onClick={handleUndo} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Undo">
-              <Undo className="size-5" />
+        <div className="toolbar px-4 sm:px-6 py-2 flex justify-between items-center border-t border-border/30 mt-auto mb-2 sm:mb-3">
+          <div className="commands flex gap-1 sm:gap-2">
+            <Button variant="ghost" size="icon" onClick={handleUndo} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors" title="Undo">
+              <Undo className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRedo} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Redo">
-              <Redo className="size-5" />
+            <Button variant="ghost" size="icon" onClick={handleRedo} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors" title="Redo">
+              <Redo className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleSave} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Save">
-              <Save className="size-5" />
+            <Button variant="ghost" size="icon" onClick={handleSave} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors" title="Save">
+              <Save className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Restore">
-              <RotateCcw className="size-5" />
+            <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors" title="Restore">
+              <RotateCcw className="size-5 text-foreground" />
             </Button>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-neutral-700/50 active:bg-neutral-600/50 transition-colors" title="Add">
-            <Plus className="size-5" />
+          <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground hover:bg-accent/15 active:bg-accent/25 transition-colors" title="Add">
+            <Plus className="size-5 text-foreground" />
           </Button>
         </div>
 
         {/* Prompt Input */}
-        <div className="px-4 pb-4">
-          <div className="prompt mb-3">
-            <Button 
-              variant="ghost" 
+        <div className="px-2 sm:px-4 pt-1 pb-2 sm:pb-3">
+          <div className="prompt-container bg-neutral-800 rounded-2xl sm:rounded-3xl p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2">
+            <Button
               onClick={handleTools}
-              className="p-0 border-0 shadow-none bg-transparent hover:bg-transparent focus:bg-transparent"
+              className="p-0 m-0 border-none shadow-none bg-transparent hover:bg-transparent focus:ring-0 focus:ring-offset-0 active:bg-transparent appearance-none focus-visible:outline-none outline-none ring-0"
               title="Tools"
             >
-              <div className="flex items-center px-2 py-1.5 text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 active:bg-neutral-600 rounded-lg transition-colors">
-                <Plus className="size-5 mr-1.5" />
-                <span className="text-sm">Tools</span>
+              <div className="h-9 px-2.5 flex items-center text-neutral-300 bg-transparent hover:text-neutral-100 hover:bg-neutral-700/80 active:bg-neutral-600/80 rounded-lg transition-colors cursor-pointer">
+                <Plus className="size-5 mr-1.5 shrink-0" />
+                <span className="text-sm font-medium shrink-0">Tools</span>
               </div>
             </Button>
             
@@ -148,31 +147,35 @@ const VhybZApp: React.FC = () => {
               placeholder="Craft something beautiful..."
               value={message}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
-              className="flex-1 bg-transparent border-0 focus:ring-0 text-foreground placeholder:text-neutral-400 resize-none text-sm py-1.5 min-h-0 outline-none focus:outline-none"
+              className="flex-1 bg-transparent border-0 focus:ring-0 text-foreground placeholder:text-neutral-400 resize-none text-sm py-2 h-9 min-h-0 outline-none"
               rows={1}
             />
             
-            <Button 
-              variant="ghost" 
+            <Button
               onClick={handleMicrophone}
-              className="p-0 border-0 shadow-none bg-transparent hover:bg-transparent focus:bg-transparent"
+              className="p-0 m-0 border-none shadow-none bg-transparent hover:bg-transparent focus:ring-0 focus:ring-offset-0 active:bg-transparent appearance-none focus-visible:outline-none outline-none ring-0"
               title="Microphone"
             >
-              <div className="w-8 h-8 flex items-center justify-center text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 active:bg-neutral-600 rounded-lg transition-colors">
-                <Mic className="size-5" />
+              <div className="w-9 h-9 p-0 flex items-center justify-center text-neutral-300 bg-transparent hover:text-neutral-100 hover:bg-neutral-700/80 active:bg-neutral-600/80 rounded-lg transition-colors cursor-pointer">
+                <Mic className="size-5 shrink-0" />
               </div>
             </Button>
             
-            <Button 
-              variant="ghost"
-              onClick={handleSendMessage} 
-              className="p-0 border-0 shadow-none bg-transparent hover:bg-transparent focus:bg-transparent"
+            <Button
+              onClick={handleSendMessage}
+              className="p-0 m-0 border-none shadow-none bg-transparent hover:bg-transparent focus:ring-0 focus:ring-offset-0 active:bg-transparent appearance-none focus-visible:outline-none outline-none ring-0"
               disabled={!message.trim()}
               title="Send Message"
             >
-              <div className="w-8 h-8 rounded-full bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-500 flex items-center justify-center transition-colors">
-                <ArrowUp className="size-5 text-neutral-200" />
-              </div>
+              {message.trim() ? (
+                <div className="w-9 h-9 p-0 flex items-center justify-center rounded-full bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-500 transition-colors cursor-pointer">
+                  <ArrowUp className="size-5 text-neutral-100" />
+                </div>
+              ) : (
+                <div className="w-9 h-9 p-0 flex items-center justify-center rounded-full bg-neutral-600/70 transition-colors cursor-not-allowed">
+                  <ArrowUp className="size-5 text-neutral-400/70" />
+                </div>
+              )}
             </Button>
           </div>
         </div>
