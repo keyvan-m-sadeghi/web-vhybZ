@@ -60,7 +60,7 @@ const VhybZApp: React.FC = () => {
         {/* Header */}
         <header className='appbar'>
           <nav className="navbar px-4 sm:px-6 py-3 flex justify-between items-center border-b border-border/30">
-            <Button variant="ghost" size="icon" className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}}>
+            <Button variant="ghost" size="icon" className="p-0 m-0 bg-transparent border-transparent shadow-none focus:bg-transparent transition-colors hover:bg-white/5 active:bg-white/10" style={{color: 'hsl(var(--foreground))'}}>
               <img src="/logo.png" alt="VhybZ Logo" className='logo h-6 w-6'/>
             </Button>
             
@@ -69,7 +69,7 @@ const VhybZApp: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setView('render')}
-                className="p-0 m-0 px-3 py-2 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors"
+                className="p-0 m-0 px-3 py-2 bg-transparent border-transparent shadow-none focus:bg-transparent transition-colors hover:bg-white/5 active:bg-white/10"
                 style={{color: view === 'render' ? 'hsl(var(--foreground))' : 'hsl(var(--foreground) / 0.7)'}}
               >
                 <Smartphone className="size-5" style={{color: 'hsl(var(--foreground))'}} />
@@ -78,14 +78,14 @@ const VhybZApp: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setView('chat')}
-                className="p-0 m-0 px-3 py-2 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors"
+                className="p-0 m-0 px-3 py-2 bg-transparent border-transparent shadow-none focus:bg-transparent transition-colors hover:bg-white/5 active:bg-white/10"
                 style={{color: view === 'chat' ? 'hsl(var(--foreground))' : 'hsl(var(--foreground) / 0.7)'}}
               >
                 <MessageCircle className="size-5" style={{color: 'hsl(var(--foreground))'}} />
               </Button>
             </div>
             
-            <Button variant="ghost" size="icon" onClick={handleShare} className="p-0 m-0 bg-transparent border-transparent shadow-none hover:bg-accent/10 focus:bg-transparent active:bg-transparent transition-colors" style={{color: 'hsl(var(--foreground))'}}>
+            <Button variant="ghost" size="icon" onClick={handleShare} className="p-0 m-0 bg-transparent border-transparent shadow-none focus:bg-transparent transition-colors hover:bg-white/5 active:bg-white/10" style={{color: 'hsl(var(--foreground))'}}>
               <Share2 className="size-5 text-foreground" />
             </Button>
           </nav>
@@ -111,26 +111,26 @@ const VhybZApp: React.FC = () => {
         {/* Toolbar */}
         <div className="toolbar px-4 sm:px-6 py-2 flex justify-between items-center border-t border-border/30 mt-auto mb-2 sm:mb-3">
           <div className="commands flex gap-1 sm:gap-2">
-            <Button variant="ghost" size="icon" onClick={handleUndo} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Undo">
+            <Button variant="ghost" size="icon" onClick={handleUndo} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg transition-colors" title="Undo">
               <Undo className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRedo} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Redo">
+            <Button variant="ghost" size="icon" onClick={handleRedo} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg transition-colors" title="Redo">
               <Redo className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleSave} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Save">
+            <Button variant="ghost" size="icon" onClick={handleSave} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg transition-colors" title="Save">
               <Save className="size-5 text-foreground" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Restore">
+            <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg transition-colors" title="Restore">
               <RotateCcw className="size-5 text-foreground" />
             </Button>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg" title="Add">
+          <Button variant="ghost" size="icon" onClick={handleRevert} className="text-foreground border-0 shadow-none bg-transparent hover:bg-accent/10 active:bg-accent/20 focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 rounded-lg transition-colors" title="Add">
             <Plus className="size-5 text-foreground" />
           </Button>
         </div>
 
         {/* Prompt Input */}
-        <div className="px-2 sm:px-4 pt-1 pb-2 sm:pb-3">
+        <div className="px-2 sm:px-4 pt-1 pb-3 sm:pb-4">
           <div className="prompt-container bg-neutral-800 rounded-2xl sm:rounded-3xl p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2">
             <Button
               asChild
@@ -148,7 +148,7 @@ const VhybZApp: React.FC = () => {
               placeholder="Craft something beautiful..."
               value={message}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
-              className="flex-1 bg-transparent border-0 focus:ring-0 text-foreground placeholder:text-neutral-400 resize-none text-sm py-2 h-9 min-h-0 outline-none"
+              className="flex-1 bg-transparent border-0 focus:ring-0 text-foreground placeholder:text-neutral-500 resize-none text-sm py-2 h-9 min-h-0 outline-none"
               rows={1}
             />
             
