@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { 
+  Share, 
+  Undo, 
+  Redo, 
+  Save, 
+  Plus, 
+  Send, 
+  MessageCircle, 
+  Smartphone, 
+  RotateCcw 
+} from 'lucide-react';
 import './App.css';
-
-// const darkTheme = createTheme({
-//   palette: {
-//     mode: 'dark',
-//   },
-// });
 
 const VhybZApp: React.FC = () => {
   const [view, setView] = useState<string>('render');
@@ -37,58 +46,75 @@ const VhybZApp: React.FC = () => {
   };
 
   return (
-    // <ThemeProvider theme={darkTheme}>
-    //   <CssBaseline />
+    <div className="dark min-h-screen bg-background text-foreground">
       <div className='window'>
+        {/* Header */}
         <header className='appbar'>
-          <div className='navbar'>
-            <button>
-              <img src="/logo.png" alt="VhybZ Logo" className='logo'/>
-            </button>
-            <div role="group"> {/* Replaced ButtonGroup */}
-              <button onClick={() => setView('render')}>
-                {/* SmartphoneIcon */} Render
-              </button>
-              <button onClick={() => setView('chat')}>
-                {/* ChatIcon */} Chat
-              </button>
-            </div>
-            <button onClick={handleShare}>
-              {/* ShareIcon */} Share
-            </button>
-          </div>
+          <nav className='navbar'>
+            <Button variant="ghost" size="icon" className="p-2">
+              <img src="/logo.png" alt="VhybZ Logo" className='logo h-8 w-8'/>
+            </Button>
+            
+            <ToggleGroup type="single" value={view} onValueChange={(value: string) => value && setView(value)} className="mx-4">
+              <ToggleGroupItem value="render" aria-label="Render view">
+                <Smartphone className="h-4 w-4" />
+              </ToggleGroupItem>
+              <ToggleGroupItem value="chat" aria-label="Chat view">
+                <MessageCircle className="h-4 w-4" />
+              </ToggleGroupItem>
+            </ToggleGroup>
+            
+            <Button variant="ghost" size="icon" onClick={handleShare}>
+              <Share className="h-4 w-4" />
+            </Button>
+          </nav>
         </header>
 
+        {/* Main Content */}
         <main className='content'>
-          <div className='container'> {/* Replaced Paper */}
-            {view === 'render' ? 'Rendered content' : 'Chat history'}
-          </div>
+          <Card className='container'>
+            <div className="p-6 text-center text-muted-foreground">
+              {view === 'render' ? 'Rendered content' : 'Chat history'}
+            </div>
+          </Card>
         </main>
 
+        {/* Toolbar */}
         <div className='toolbar'>
           <div className="commands">
-            <button onClick={handleUndo}>{/* UndoIcon */}Undo</button>
-            <button onClick={handleRedo}>{/* RedoIcon */}Redo</button>
-            <button onClick={handleSave}>{/* SaveIcon */}Save</button>
-            <button onClick={handleRevert}>{/* RestoreIcon */}Revert</button>
+            <Button variant="ghost" size="icon" onClick={handleUndo}>
+              <Undo className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={handleRedo}>
+              <Redo className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={handleSave}>
+              <Save className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={handleRevert}>
+              <RotateCcw className="h-4 w-4" />
+            </Button>
           </div>
-          <button onClick={handleRevert}>{/* AddIcon */}Add</button>
+          <Button variant="ghost" size="icon" onClick={handleRevert}>
+            <Plus className="h-4 w-4" />
+          </Button>
         </div>
 
+        {/* Prompt Input */}
         <div className="prompt">
-          <textarea
-            className="fullWidth" // Assuming fullWidth is a class that provides this style
+          <Textarea
             placeholder="Prompt"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            rows={2} // Replaced multiline and maxRows
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
+            className="min-h-0 resize-none"
+            rows={2}
           />
-          <button onClick={handleSendMessage}>
-            {/* SendIcon */} Send
-          </button>
+          <Button onClick={handleSendMessage} size="icon">
+            <Send className="h-4 w-4" />
+          </Button>
         </div>
       </div>
-    // </ThemeProvider>
+    </div>
   );
 };
 
