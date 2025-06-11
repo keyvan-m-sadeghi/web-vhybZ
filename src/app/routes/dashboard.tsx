@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/site-header";
 import { useChatRuntime } from "@assistant-ui/react-ai-sdk";
 import { Thread } from "@/components/thread";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
+import { ProtectedRoute } from "@/components/protected-route";
 import {
   SidebarInset,
   SidebarProvider,
@@ -18,22 +19,24 @@ export default function Page() {
   });
 
   return (
-    <div className="h-dvh flex flex-col [--header-height:calc(--spacing(14))]">
-      <SidebarProvider className="flex flex-col">
-        <SiteHeader />
-        <div className="flex flex-1 overflow-hidden">
-          <AppSidebar />
-          <SidebarInset>
-            <div className="flex h-full flex-col gap-4 p-4">
-              <div className="bg-muted/50 flex h-full flex-col rounded-xl">
-                <AssistantRuntimeProvider runtime={runtime}>
-                  <Thread />
-                </AssistantRuntimeProvider>
+    <ProtectedRoute>
+      <div className="h-dvh flex flex-col [--header-height:calc(--spacing(14))]">
+        <SidebarProvider className="flex flex-col">
+          <SiteHeader />
+          <div className="flex flex-1 overflow-hidden">
+            <AppSidebar />
+            <SidebarInset>
+              <div className="flex h-full flex-col gap-4 p-4">
+                <div className="bg-muted/50 flex h-full flex-col rounded-xl">
+                  <AssistantRuntimeProvider runtime={runtime}>
+                    <Thread />
+                  </AssistantRuntimeProvider>
+                </div>
               </div>
-            </div>
-          </SidebarInset>
-        </div>
-      </SidebarProvider>
-    </div>
+            </SidebarInset>
+          </div>
+        </SidebarProvider>
+      </div>
+    </ProtectedRoute>
   );
 }

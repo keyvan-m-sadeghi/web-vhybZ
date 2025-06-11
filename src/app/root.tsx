@@ -1,4 +1,4 @@
-import "../index.css"
+import "../index.css";
 import {
   Links,
   Meta,
@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import { ThemeProvider } from "@/components/theme-provider";
+import { QueryProvider } from "@/providers/query-provider";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,9 +21,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>        
-        <ThemeProvider defaultTheme="dark" storageKey="vhybZ-ui-theme">
-          {children}
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="vhybZ-ui-theme">
+            {children}
+          </ThemeProvider>
+        </QueryProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

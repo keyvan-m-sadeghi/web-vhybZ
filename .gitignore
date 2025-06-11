@@ -25,3 +25,6 @@ dist-ssr
 
 # React Router
 .react-router/
+
+# Build artifacts
+build/

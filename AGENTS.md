@@ -22,37 +22,550 @@ The vhybZ Web Client is a React-based application that provides the primary web 
 ### Technology Stack
 - **Framework**: React 19.1.0 with TypeScript for type safety
 - **Build System**: Vite 6.3.5 with hot module replacement and fast builds
-- **UI Framework**: Material-UI 7.1.1 with Emotion for styling and theming
-- **State Management**: React Context + Hooks pattern
-- **Routing**: React Router for single-page application navigation
+- **Routing**: React Router 7.6.2 with file-based routing for SPA navigation
+- **UI Components**: Radix UI + Tailwind CSS for design system and styling
+- **State Management**: Zustand for cross-platform state management
+- **Data Fetching**: TanStack Query (@tanstack/react-query) for server state
 - **Development**: ESLint with React-specific rules and best practices
+
+### Development Environment
+
+#### Node.js Environment
+This directory uses **standard Node.js tooling**:
+- **Package Manager**: npm (not Deno)
+- **Runtime**: Node.js with standard npm packages
+- **Build System**: Vite with React Router 7
+- **Commands**: Use `npm run` commands, never `deno task`
+
+#### Why Node.js Here?
+- React ecosystem expects Node.js environment
+- npm packages work out of the box
+- Developer familiarity with standard tooling
+- No "node:" prefixes or Deno-specific imports needed
+
+### Cross-Platform State Architecture
+
+#### Design Philosophy
+Our state management strategy prioritizes **code reusability** across React Web and React Native platforms. By encapsulating all business logic, API interactions, and state management in platform-agnostic modules, we achieve 90%+ code sharing between web and mobile implementations.
+
+#### Core Principles
+1. **Platform-Agnostic Business Logic**: Pure TypeScript/JavaScript for all data operations
+2. **Idiomatic Code First**: Use standard patterns, avoid custom wrappers and abstractions
+3. **Minimal Cognitive Overhead**: External developers should understand code immediately
+4. **Shared State Stores**: Zustand stores work identically across platforms
+5. **Zero Boilerplate DX**: Custom hooks hide complexity, expose clean APIs
+6. **Role-Based Architecture**: Built-in support for admin panels and permission systems
+
+#### State Management Stack
+- **Zustand**: Lightweight, boilerplate-free state management for UI state
+- **TanStack Query**: Idiomatic server state with standard fetch functions
+- **No Custom Classes**: Avoid `new ClassName()` patterns, prefer functional approach
+- **Standard Patterns**: Use globally understood code patterns over custom abstractions
+
+#### Design Decisions
+
+##### 1. No HTTP Client Classes
+```typescript
+// ❌ Avoid: Custom wrapper classes
+class HttpClient {
+  async request() { /* ... */ }
+}
+
+// ✅ Prefer: Idiomatic TanStack Query functions
+export const fetchCurrentUser = async (): Promise<User | null> => {
+  const response = await fetch('/api/user', { credentials: 'include' });
+  if (!response.ok) throw new Error('Failed to fetch user');
+  return response.json();
+};
+```
+
+##### 2. Functional API Patterns
+```typescript
+// ❌ Avoid: API service classes
+export const authApi = {
+  async getCurrentUser() { /* */ }
+};
+
+// ✅ Prefer: Direct fetch functions
+export const fetchCurrentUser = async () => { /* */ };
+export const logoutUser = async () => { /* */ };
+```
+
+##### 3. Clean Hook DX
+```typescript
+// ✅ Goal: Zero boilerplate for consumers
+const { user, login, logout, isLoading } = useAuth();
+const { canAccess } = useRole('admin');
+
+// All complexity hidden in hook implementation
+// External devs see clean, obvious APIs
+```
+
+##### 4. Role-Based Access Control
+```typescript
+// Built-in role support for admin panels
+interface User {
+  role: 'user' | 'admin' | 'superadmin';
+  permissions: string[];
+}
+
+// Simple role checking
+const AdminPanel = () => {
+  return (
+    <ProtectedRoute roles={['admin', 'superadmin']}>
+      <AdminDashboard />
+    </ProtectedRoute>
+  );
+};
+```
 
 ### Application Structure
 ```
 src/
-├── components/          # Reusable UI components
-│   ├── common/         # Shared components (Button, Modal, etc.)
-│   ├── chat/           # Chat interface components
-│   ├── artifacts/      # Artifact display and interaction
-│   └── layout/         # Layout and navigation components
-├── pages/              # Route-based page components
-│   ├── Dashboard/      # User dashboard and artifact gallery
-│   ├── Create/         # Artifact creation interface
-│   ├── Collaborate/    # Real-time collaboration features
-│   └── Profile/        # User profile and settings
-├── hooks/              # Custom React hooks
-│   ├── useAuth.ts      # Authentication state management
-│   ├── useArtifacts.ts # Artifact CRUD operations
-│   └── useVhybZ.ts     # vhybZ library integration
-├── services/           # External service integrations
-│   ├── api.ts          # Backend API client
-│   ├── vhybz.ts        # vhybZ library wrapper
-│   └── auth.ts         # Authentication service
-├── utils/              # Shared utilities and helpers
-├── types/              # TypeScript type definitions
-├── contexts/           # React Context providers
-└── styles/             # Global styles and Material-UI themes
+├── app/                    # React Router 7 app directory
+│   ├── root.tsx           # App shell and providers
+│   ├── routes.ts          # Route configuration
+│   └── routes/            # File-based routing
+│       ├── login.tsx      # Authentication page
+│       ├── dashboard.tsx  # User dashboard
+│       ├── assistant.tsx  # Main chat interface
+│       └── api/           # API routes
+├── components/             # Reusable UI components
+│   ├── ui/                # Radix UI + Tailwind components
+│   ├── thread.tsx         # Chat thread component
+│   ├── login-form.tsx     # Authentication form
+│   └── protected-route.tsx # Route protection
+├── lib/                   # Core platform-agnostic modules
+│   ├── api/               # HTTP client and API services
+│   │   ├── http-client.ts # Platform-agnostic fetch wrapper
+│   │   ├── auth-api.ts    # Authentication API calls
+│   │   └── artifacts-api.ts # Artifact CRUD operations
+│   ├── stores/            # Zustand state stores
+│   │   ├── auth-store.ts  # Authentication state
+│   │   ├── artifacts-store.ts # Artifact management
+│   │   └── chat-store.ts  # Chat/conversation state
+│   ├── queries/           # TanStack Query configurations
+│   │   ├── auth-queries.ts # Auth-related queries
+│   │   ├── artifacts-queries.ts # Artifact queries
+│   │   └── chat-queries.ts # Chat history queries
+│   └── services/          # Platform adapters
+│       ├── auth-service.web.ts # Web OAuth implementation
+│       ├── storage-service.web.ts # Web storage adapter
+│       └── types.ts       # Shared TypeScript types
+├── hooks/                 # Custom React hooks
+│   ├── use-auth.ts        # Authentication hooks
+│   ├── use-artifacts.ts   # Artifact management hooks
+│   └── use-chat.ts        # Chat functionality hooks
+├── providers/             # React providers
+│   ├── query-provider.tsx # TanStack Query setup
+│   └── auth-provider.tsx  # Authentication context
+└── utils/                 # Shared utilities
+    ├── validation.ts      # Zod schemas and validation
+    └── constants.ts       # App-wide constants
 ```
+
+#### Cross-Platform Module Strategy
+```
+lib/                    # 90% shared across platforms
+├── stores/            # Zustand stores (100% shared)
+├── queries/           # TanStack Query configs (100% shared)
+├── api/              # HTTP layer (95% shared)
+├── services/         # Platform adapters (50% shared interfaces)
+└── types.ts          # TypeScript definitions (100% shared)
+
+// Platform-specific implementations:
+// Web: services/*.web.ts
+// React Native: services/*.native.ts
+```
+
+## State Management & Data Flow Architecture
+
+### Zustand + TanStack Query Integration
+
+#### Architecture Overview
+We use a hybrid approach combining Zustand for client state and TanStack Query for server state, designed for maximum cross-platform compatibility:
+
+```typescript
+// lib/stores/auth-store.ts - Client State (Zustand)
+interface AuthState {
+  // UI/Client-only state
+  isLoading: boolean;
+  error: string | null;
+  
+  // Actions
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+  clearError: () => void;
+}
+
+// lib/queries/auth-queries.ts - Server State (TanStack Query)
+export const authQueries = {
+  user: () => ({
+    queryKey: ['auth', 'user'],
+    queryFn: () => authApi.getCurrentUser(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: (failureCount, error) => {
+      // Don't retry 401s (unauthorized)
+      if (error?.status === 401) return false;
+      return failureCount < 3;
+    }
+  }),
+  
+  profile: (userId: string) => ({
+    queryKey: ['auth', 'profile', userId],
+    queryFn: () => authApi.getUserProfile(userId),
+    enabled: !!userId
+  })
+};
+
+export const authMutations = {
+  logout: () => ({
+    mutationFn: authApi.logout,
+    onSuccess: () => {
+      queryClient.clear(); // Clear all cached data
+      authStore.getState().clearError();
+    }
+  })
+};
+```
+
+#### Idiomatic Fetch Functions
+```typescript
+// lib/api/auth.ts - Direct fetch functions
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
+export const fetchCurrentUser = async (): Promise<User | null> => {
+  const response = await fetch(`${API_BASE_URL}/api/user`, {
+    credentials: 'include', // Essential for cookie auth
+  });
+  
+  if (response.status === 401) {
+    return null; // Not authenticated
+  }
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch user: ${response.statusText}`);
+  }
+  
+  return response.json();
+};
+
+export const logoutUser = async (): Promise<void> => {
+  const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Logout failed: ${response.statusText}`);
+  }
+};
+
+// Web-specific OAuth redirect
+export const initiateGoogleLogin = (): void => {
+  if (typeof window !== 'undefined') {
+    window.location.href = `${API_BASE_URL}/auth/google`;
+  }
+};
+```
+
+#### Custom Hooks Pattern
+```typescript
+// hooks/use-auth.ts - Cross-Platform Hooks
+export const useAuth = () => {
+  const authStore = useAuthStore();
+  const queryClient = useQueryClient();
+  
+  // Server state (cached, synchronized)
+  const userQuery = useQuery(authQueries.user());
+  
+  // Mutations
+  const logoutMutation = useMutation(authMutations.logout());
+
+  // Derived state
+  const isAuthenticated = !!userQuery.data && !userQuery.error;
+  const isLoading = userQuery.isLoading || authStore.isLoading;
+  
+  // Actions
+  const login = useCallback(() => {
+    authStore.setLoading(true);
+    authApi.initiateLogin(); // Platform-specific implementation
+  }, []);
+
+  const logout = useCallback(async () => {
+    authStore.setLoading(true);
+    try {
+      await logoutMutation.mutateAsync();
+      // TanStack Query automatically clears cache
+      // Zustand clears client state
+    } catch (error) {
+      authStore.setError(error.message);
+    } finally {
+      authStore.setLoading(false);
+    }
+  }, [logoutMutation]);
+
+  // Auto-refresh user data
+  useEffect(() => {
+    if (!userQuery.data && !userQuery.error && !userQuery.isLoading) {
+      userQuery.refetch();
+    }
+  }, []);
+
+  return {
+    // Data
+    user: userQuery.data,
+    isAuthenticated,
+    isLoading,
+    error: authStore.error || userQuery.error?.message,
+    
+    // Actions
+    login,
+    logout,
+    refetch: userQuery.refetch,
+    
+    // Utils
+    clearError: authStore.clearError
+  };
+};
+
+// Specialized hooks for specific use cases
+export const useUser = () => {
+  const { data } = useQuery(authQueries.user());
+  return data;
+};
+
+export const useAuthActions = () => {
+  const { login, logout } = useAuth();
+  return { login, logout };
+};
+```
+
+#### Artifacts & Chat State Management
+```typescript
+// lib/stores/artifacts-store.ts
+interface ArtifactsState {
+  // Client-only state
+  selectedArtifactId: string | null;
+  isCreating: boolean;
+  creationProgress: number;
+  previewContent: string;
+  
+  // Actions
+  setSelectedArtifact: (id: string | null) => void;
+  setCreationProgress: (progress: number) => void;
+  updatePreview: (content: string) => void;
+}
+
+// lib/queries/artifacts-queries.ts
+export const artifactsQueries = {
+  list: (userId: string) => ({
+    queryKey: ['artifacts', 'list', userId],
+    queryFn: () => artifactsApi.getUserArtifacts(userId),
+    enabled: !!userId,
+    staleTime: 2 * 60 * 1000 // 2 minutes
+  }),
+  
+  detail: (artifactId: string) => ({
+    queryKey: ['artifacts', 'detail', artifactId],
+    queryFn: () => artifactsApi.getArtifact(artifactId),
+    enabled: !!artifactId
+  })
+};
+
+export const artifactsMutations = {
+  create: () => ({
+    mutationFn: (data: CreateArtifactRequest) => artifactsApi.createArtifact(data),
+    onMutate: async (variables) => {
+      // Optimistic update
+      const userId = authStore.getState().user?.id;
+      if (userId) {
+        await queryClient.cancelQueries(artifactsQueries.list(userId));
+        
+        const optimisticArtifact = {
+          id: `temp-${Date.now()}`,
+          ...variables,
+          createdAt: new Date().toISOString(),
+          isOptimistic: true
+        };
+        
+        queryClient.setQueryData(
+          artifactsQueries.list(userId).queryKey,
+          (old: Artifact[] = []) => [optimisticArtifact, ...old]
+        );
+      }
+    },
+    onSuccess: (newArtifact, variables) => {
+      // Replace optimistic update with real data
+      const userId = authStore.getState().user?.id;
+      if (userId) {
+        queryClient.setQueryData(
+          artifactsQueries.list(userId).queryKey,
+          (old: Artifact[] = []) =>
+            old.map(artifact =>
+              artifact.isOptimistic ? newArtifact : artifact
+            )
+        );
+      }
+    }
+  }),
+  
+  update: () => ({
+    mutationFn: ({ id, data }: { id: string; data: UpdateArtifactRequest }) =>
+      artifactsApi.updateArtifact(id, data),
+    onSuccess: (updatedArtifact) => {
+      // Update both list and detail caches
+      queryClient.setQueryData(
+        artifactsQueries.detail(updatedArtifact.id).queryKey,
+        updatedArtifact
+      );
+      
+      const userId = authStore.getState().user?.id;
+      if (userId) {
+        queryClient.setQueryData(
+          artifactsQueries.list(userId).queryKey,
+          (old: Artifact[] = []) =>
+            old.map(artifact =>
+              artifact.id === updatedArtifact.id ? updatedArtifact : artifact
+            )
+        );
+      }
+    }
+  })
+};
+
+// hooks/use-artifacts.ts
+export const useArtifacts = () => {
+  const { user } = useAuth();
+  const artifactsStore = useArtifactsStore();
+  
+  const artifactsQuery = useQuery({
+    ...artifactsQueries.list(user?.id || ''),
+    enabled: !!user?.id
+  });
+  
+  const createMutation = useMutation(artifactsMutations.create());
+  const updateMutation = useMutation(artifactsMutations.update());
+  
+  const createArtifact = useCallback(async (prompt: string) => {
+    artifactsStore.setCreationProgress(0);
+    artifactsStore.setIsCreating(true);
+    
+    try {
+      // Simulate progress updates during creation
+      const progressInterval = setInterval(() => {
+        artifactsStore.setCreationProgress(prev => Math.min(prev + 10, 90));
+      }, 500);
+      
+      const result = await createMutation.mutateAsync({
+        prompt,
+        userId: user?.id || ''
+      });
+      
+      clearInterval(progressInterval);
+      artifactsStore.setCreationProgress(100);
+      
+      return result;
+    } finally {
+      artifactsStore.setIsCreating(false);
+      artifactsStore.setCreationProgress(0);
+    }
+  }, [user?.id, createMutation, artifactsStore]);
+  
+  return {
+    // Data
+    artifacts: artifactsQuery.data || [],
+    selectedArtifact: artifactsStore.selectedArtifactId,
+    isLoading: artifactsQuery.isLoading,
+    isCreating: artifactsStore.isCreating,
+    creationProgress: artifactsStore.creationProgress,
+    
+    // Actions
+    createArtifact,
+    updateArtifact: updateMutation.mutateAsync,
+    selectArtifact: artifactsStore.setSelectedArtifact,
+    refetch: artifactsQuery.refetch
+  };
+};
+```
+
+#### Provider Setup
+```typescript
+// providers/query-provider.tsx
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1 * 60 * 1000, // 1 minute default
+      retry: (failureCount, error) => {
+        if (error?.status === 401 || error?.status === 403) return false;
+        return failureCount < 3;
+      },
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: 'always'
+    },
+    mutations: {
+      retry: 1
+    }
+  }
+});
+
+export function QueryProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
+}
+
+// app/root.tsx
+export function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <QueryProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="vhybZ-ui-theme">
+            {children}
+          </ThemeProvider>
+        </QueryProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### React Native Migration Strategy
+
+#### Shared Code (95% reusable)
+```typescript
+// All these modules work identically on React Native:
+├── lib/
+│   ├── stores/           # 100% shared
+│   ├── queries/          # 100% shared  
+│   ├── api/             # 95% shared (HTTP client)
+│   └── types.ts         # 100% shared
+├── hooks/               # 100% shared
+└── utils/               # 100% shared
+
+// Platform-specific adaptations:
+// services/auth-service.native.ts
+export const authService = {
+  async initiateLogin() {
+    // Use react-native-app-auth instead of window.location
+    const result = await authorize(authConfig);
+    return result;
+  }
+};
+```
+
+#### Benefits of This Architecture
+1. **Type Safety**: Full TypeScript coverage across all layers
+2. **Caching**: Automatic background refetching and cache management
+3. **Optimistic Updates**: Immediate UI feedback with rollback on failure
+4. **Error Handling**: Centralized error boundaries and retry logic
+5. **Performance**: Background prefetching and selective re-rendering
+6. **Cross-Platform**: 95% code reuse between web and mobile
+7. **Developer Experience**: React Query DevTools and Zustand DevTools
 
 ## Core Features Implementation
 
